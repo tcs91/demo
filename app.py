@@ -385,25 +385,33 @@ def referral():
     if request.method == 'POST':
         referred_name = request.form.get('referred_name')
         referred_aadhaar = request.form.get('referred_aadhaar')
-        stock_amount = float(request.form.get('stock_amount'))
+        stock_amount = request.form.get('stock_amount')
 
         try:
-            # Create referral record
-            supabase.table('referrals').insert({
+            # Create referral request
+            new_referral = supabase.table('referrals').insert({
                 'referrer_id': current_user.id,
                 'referred_name': referred_name,
                 'referred_aadhaar': referred_aadhaar,
                 'stock_amount': stock_amount,
+                'commission': float(stock_amount) * 0.15,  # 15% commission
                 'status': 'pending'
             }).execute()
-            
-            flash('Referral submitted successfully!')
-            return redirect(url_for('referral'))
-        except Exception as e:
-            flash(f'Error submitting referral: {str(e)}')
+
+            flash('Referral request submitted successfully!', 'success')
             return redirect(url_for('referral'))
 
-    return render_template('referral.html')
+        except Exception as e:
+            flash(f'Error submitting referral: {str(e)}', 'error')
+            return redirect(url_for('referral'))
+
+    try:
+        # Get user's referral requests
+        referral_requests = supabase.table('referrals').select('*').eq('referrer_id', current_user.id).order('created_at', desc=True).execute()
+        return render_template('referral.html', referral_requests=referral_requests.data)
+    except Exception as e:
+        flash(f'Error loading referrals: {str(e)}', 'error')
+        return redirect(url_for('dashboard'))
 
 @app.route('/support', methods=['GET', 'POST'])
 @login_required
