@@ -812,10 +812,5 @@ def reject_transaction():
         return jsonify({'success': False, 'error': str(e)})
 
 if __name__ == '__main__':
-    # Check if we're running in production
-    if os.getenv('RENDER'):
-        # Production settings
-        app.run(host='0.0.0.0', port=int(os.getenv('PORT', 10000)))
-    else:
-        # Development settings
-        app.run(debug=True) 
+    port = int(os.getenv("PORT", 10000))
+    app.run(host='0.0.0.0', port=port) 
