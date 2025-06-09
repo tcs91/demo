@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}TATA Stocks - Profile{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .profile-header h1 {
+        color: var(--accent-color);
+        margin-bottom: 10px;
+    }
+
+    .profile-info {
+        background-color: var(--secondary-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .info-group {
+        margin-bottom: 20px;
+    }
+
+    .info-label {
+        color: var(--accent-color);
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        font-size: 1.1em;
+    }
+
+    .wallet-info {
+        background-color: var(--accent-color);
+        color: var(--secondary-color);
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .wallet-amount {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>Profile Information</h1>
+        </div>
+
+        <div class="profile-info">
+            <div class="info-group">
+                <div class="info-label">Name (as per Aadhaar)</div>
+                <div class="info-value">{{ current_user.name }}</div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-label">Aadhaar Number</div>
+                <div class="info-value">{{ current_user.aadhaar }}</div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-label">Mobile Number</div>
+                <div class="info-value">{{ current_user.mobile }}</div>
+            </div>
+
+            <div class="wallet-info">
+                <div class="info-label">Wallet Balance</div>
+                <div class="wallet-amount">₹{{ current_user.wallet_balance }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

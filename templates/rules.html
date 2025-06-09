@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}TATA Stocks - Rules{% endblock %}
+
+{% block extra_css %}
+<style>
+    .rules-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .rules-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .rules-header h1 {
+        color: var(--accent-color);
+        margin-bottom: 10px;
+    }
+
+    .rules-section {
+        background-color: var(--secondary-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        color: var(--accent-color);
+        font-size: 1.3em;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .rule-list {
+        list-style-type: none;
+    }
+
+    .rule-item {
+        margin-bottom: 15px;
+        padding-left: 20px;
+        position: relative;
+    }
+
+    .rule-item::before {
+        content: '•';
+        color: var(--accent-color);
+        position: absolute;
+        left: 0;
+    }
+
+    .rule-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .highlight {
+        color: var(--accent-color);
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="rules-container">
+        <div class="rules-header">
+            <h1>Platform Rules & Guidelines</h1>
+        </div>
+
+        <div class="rules-section">
+            <div class="section-title">Deposit Rules</div>
+            <ul class="rule-list">
+                <li class="rule-item">Minimum deposit amount is <span class="highlight">₹500</span></li>
+                <li class="rule-item">Deposits are processed within 24 hours of submission</li>
+                <li class="rule-item">Valid UTR number must be provided for all deposits</li>
+                <li class="rule-item">Deposits are subject to verification and approval</li>
+            </ul>
+        </div>
+
+        <div class="rules-section">
+            <div class="section-title">Withdrawal Rules</div>
+            <ul class="rule-list">
+                <li class="rule-item">Minimum withdrawal amount is <span class="highlight">₹1000</span></li>
+                <li class="rule-item">Withdrawals are processed within 24 hours</li>
+                <li class="rule-item">No withdrawals are processed on Sundays</li>
+                <li class="rule-item">Withdrawals are subject to verification and approval</li>
+                <li class="rule-item">Account details must be accurate and match the registered name</li>
+            </ul>
+        </div>
+
+        <div class="rules-section">
+            <div class="section-title">Stock Investment Rules</div>
+            <ul class="rule-list">
+                <li class="rule-item">Each stock has a specific package amount and tenure</li>
+                <li class="rule-item">Daily returns are credited to your wallet balance</li>
+                <li class="rule-item">Claims can be made between 6:00 AM and 10:00 PM (IST)</li>
+                <li class="rule-item">One claim per stock per day is allowed</li>
+                <li class="rule-item">Total returns are calculated based on the investment tenure</li>
+            </ul>
+        </div>
+
+        <div class="rules-section">
+            <div class="section-title">Referral Rules</div>
+            <ul class="rule-list">
+                <li class="rule-item">Referral bonus of <span class="highlight">₹500</span> is awarded for each successful referral</li>
+                <li class="rule-item">Referred user must purchase a stock to qualify for the bonus</li>
+                <li class="rule-item">Referral bonus is subject to verification and approval</li>
+                <li class="rule-item">Referral bonus is credited to your wallet balance</li>
+            </ul>
+        </div>
+
+        <div class="rules-section">
+            <div class="section-title">General Rules</div>
+            <ul class="rule-list">
+                <li class="rule-item">All transactions are subject to verification</li>
+                <li class="rule-item">Platform reserves the right to modify rules and policies</li>
+                <li class="rule-item">Users must provide accurate information during registration</li>
+                <li class="rule-item">Any fraudulent activity will result in account suspension</li>
+                <li class="rule-item">Platform is not responsible for any technical issues or delays</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %} 

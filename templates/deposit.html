@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}TATA Stocks - Deposit{% endblock %}
+
+{% block extra_css %}
+<style>
+    .deposit-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .deposit-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .deposit-header h1 {
+        color: var(--accent-color);
+        margin-bottom: 10px;
+    }
+
+    .qr-section {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .qr-code {
+        max-width: 200px;
+        margin: 0 auto 15px;
+        border: 2px solid var(--border-color);
+        padding: 10px;
+        background-color: white;
+    }
+
+    .upi-id {
+        background-color: var(--secondary-color);
+        color: var(--accent-color);
+        padding: 10px;
+        border-radius: 5px;
+        font-family: monospace;
+        margin: 10px 0;
+    }
+
+    .deposit-form {
+        background-color: var(--secondary-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--accent-color);
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        background-color: var(--primary-color);
+        color: var(--text-color);
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+    }
+
+    .submit-btn {
+        background-color: var(--accent-color);
+        color: var(--secondary-color);
+        padding: 12px 24px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        width: 100%;
+    }
+
+    .submit-btn:hover {
+        opacity: 0.9;
+    }
+
+    .min-amount {
+        color: var(--accent-color);
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="deposit-container">
+        <div class="deposit-header">
+            <h1>Deposit Funds</h1>
+        </div>
+
+        <div class="qr-section">
+            <div class="qr-code">
+                <img src="{{ url_for('static', filename='qr.jpg') }}" alt="Payment QR Code" style="width: 100%;">
+            </div>
+            <div class="upi-id">UPI ID: tatastocks@upi</div>
+        </div>
+
+        <div class="deposit-form">
+            <form action="{{ url_for('deposit') }}" method="POST">
+                <div class="form-group">
+                    <label for="amount">Amount (₹)</label>
+                    <input type="number" id="amount" name="amount" min="500" step="1" required>
+                    <div class="min-amount">Minimum deposit amount: ₹500</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="utr_number">UTR Number</label>
+                    <input type="text" id="utr_number" name="utr_number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sender_name">Sender Name</label>
+                    <input type="text" id="sender_name" name="sender_name" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Deposit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

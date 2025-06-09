@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}TATA Stocks - Login{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        max-width: 400px;
+        margin: 40px auto;
+    }
+
+    .auth-tabs {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+    .auth-tab {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        background-color: var(--secondary-color);
+        cursor: pointer;
+        border: 1px solid var(--border-color);
+    }
+
+    .auth-tab.active {
+        background-color: var(--accent-color);
+        color: var(--secondary-color);
+    }
+
+    .auth-form {
+        display: none;
+    }
+
+    .auth-form.active {
+        display: block;
+    }
+
+    .tata-logo {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 20px;
+        position: relative;
+    }
+
+    .tata-logo::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 4px solid var(--accent-color);
+        border-radius: 50%;
+        box-sizing: border-box;
+    }
+
+    .tata-logo::after {
+        content: 'TATA';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--accent-color);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="tata-logo"></div>
+    
+    <div class="auth-tabs">
+        <div class="auth-tab active" onclick="switchTab('login')">Login</div>
+        <div class="auth-tab" onclick="switchTab('register')">Register</div>
+    </div>
+
+    <div class="auth-form active" id="login-form">
+        <form action="{{ url_for('login') }}" method="POST">
+            <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" name="mobile" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+
+    <div class="auth-form" id="register-form">
+        <form action="{{ url_for('register') }}" method="POST">
+            <div class="form-group">
+                <label for="name">Name (as per Aadhaar)</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="aadhaar">Aadhaar Number</label>
+                <input type="text" id="aadhaar" name="aadhaar" pattern="[0-9]{12}" required>
+            </div>
+            <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" name="mobile" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function switchTab(tab) {
+        // Update tabs
+        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+        document.querySelector(`.auth-tab[onclick="switchTab('${tab}')"]`).classList.add('active');
+
+        // Update forms
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+        document.getElementById(`${tab}-form`).classList.add('active');
+    }
+</script>
+{% endblock %} 

@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}TATA Stocks - Referral{% endblock %}
+
+{% block extra_css %}
+<style>
+    .referral-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .referral-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .referral-header h1 {
+        color: var(--accent-color);
+        margin-bottom: 10px;
+    }
+
+    .referral-code-section {
+        background-color: var(--secondary-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 30px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .code-label {
+        color: var(--accent-color);
+        font-size: 1.2em;
+        margin-bottom: 15px;
+    }
+
+    .referral-code {
+        background-color: var(--primary-color);
+        border: 2px solid var(--accent-color);
+        border-radius: 5px;
+        padding: 15px;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: var(--accent-color);
+        margin-bottom: 15px;
+        display: inline-block;
+    }
+
+    .copy-btn {
+        background-color: var(--accent-color);
+        color: var(--secondary-color);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    .copy-btn:hover {
+        opacity: 0.9;
+    }
+
+    .referral-form {
+        background-color: var(--secondary-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--accent-color);
+        font-weight: bold;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        background-color: var(--primary-color);
+        color: var(--text-color);
+        font-size: 1em;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+    }
+
+    .submit-btn {
+        background-color: var(--accent-color);
+        color: var(--secondary-color);
+        padding: 12px 30px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1.1em;
+        width: 100%;
+    }
+
+    .submit-btn:hover {
+        opacity: 0.9;
+    }
+
+    .referral-info {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: var(--secondary-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+    }
+
+    .info-item {
+        margin-bottom: 10px;
+        color: var(--accent-color);
+    }
+
+    .info-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .success-message {
+        background-color: #4caf50;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        .referral-form {
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="referral-container">
+        <div class="referral-header">
+            <h1>Refer & Earn</h1>
+        </div>
+
+        <div class="referral-code-section">
+            <div class="code-label">Your Referral Code</div>
+            <div class="referral-code">{{ current_user.id }}</div>
+            <button class="copy-btn" onclick="copyReferralCode()">Copy Code</button>
+        </div>
+
+        <form class="referral-form" method="POST">
+            <div class="form-group">
+                <label for="referred_name">Referred Person's Name</label>
+                <input type="text" id="referred_name" name="referred_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="referred_aadhaar">Referred Person's Aadhaar Number</label>
+                <input type="text" id="referred_aadhaar" name="referred_aadhaar" required>
+            </div>
+
+            <div class="form-group">
+                <label for="stock_amount">Investment Amount (₹)</label>
+                <input type="number" id="stock_amount" name="stock_amount" min="1000" step="100" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Referral</button>
+        </form>
+
+        <div class="referral-info">
+            <div class="info-item">• Earn 5% commission on your referrals' investments</div>
+            <div class="info-item">• Commission is credited to your wallet instantly</div>
+            <div class="info-item">• Minimum investment amount: ₹1000</div>
+            <div class="info-item">• Share your referral code with friends and family</div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyReferralCode() {
+    const referralCode = document.querySelector('.referral-code').textContent;
+    navigator.clipboard.writeText(referralCode).then(() => {
+        const copyBtn = document.querySelector('.copy-btn');
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => {
+            copyBtn.textContent = originalText;
+        }, 2000);
+    });
+}
+</script>
+{% endblock %} 

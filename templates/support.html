@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+
+{% block title %}TATA Stocks - Support{% endblock %}
+
+{% block extra_css %}
+<style>
+    .support-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .support-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .support-header h1 {
+        color: var(--accent-color);
+        margin-bottom: 10px;
+    }
+
+    .contact-info {
+        background-color: var(--secondary-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .contact-method {
+        margin: 15px 0;
+    }
+
+    .contact-label {
+        color: var(--accent-color);
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .contact-value {
+        font-size: 1.1em;
+    }
+
+    .support-form {
+        background-color: var(--secondary-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--accent-color);
+        font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        background-color: var(--primary-color);
+        color: var(--text-color);
+        font-size: 1em;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--accent-color);
+    }
+
+    .form-group textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    .submit-btn {
+        background-color: var(--accent-color);
+        color: var(--secondary-color);
+        padding: 12px 30px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1.1em;
+        width: 100%;
+    }
+
+    .submit-btn:hover {
+        opacity: 0.9;
+    }
+
+    .support-info {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: var(--secondary-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+    }
+
+    .info-item {
+        margin-bottom: 10px;
+        color: var(--accent-color);
+    }
+
+    .info-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .ticket-history {
+        background-color: var(--secondary-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .history-header {
+        color: var(--accent-color);
+        font-size: 1.3em;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .ticket-list {
+        list-style-type: none;
+    }
+
+    .ticket-item {
+        background-color: var(--primary-color);
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .ticket-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .ticket-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .ticket-id {
+        color: var(--accent-color);
+        font-weight: bold;
+    }
+
+    .ticket-status {
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.9em;
+    }
+
+    .status-open {
+        background-color: #ffd700;
+        color: var(--secondary-color);
+    }
+
+    .status-closed {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    .ticket-subject {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .ticket-message {
+        color: var(--text-color);
+        margin-bottom: 10px;
+    }
+
+    .ticket-meta {
+        display: flex;
+        justify-content: space-between;
+        color: var(--accent-color);
+        font-size: 0.9em;
+    }
+
+    .no-tickets {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-color);
+    }
+
+    @media (max-width: 768px) {
+        .support-form {
+            padding: 20px;
+        }
+
+        .ticket-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .ticket-status {
+            margin-top: 10px;
+        }
+
+        .ticket-meta {
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="support-container">
+        <div class="support-header">
+            <h1>Support</h1>
+        </div>
+
+        <form class="support-form" method="POST">
+            <div class="form-group">
+                <label for="query_type">Query Type</label>
+                <select id="query_type" name="query_type" required>
+                    <option value="">Select Query Type</option>
+                    <option value="technical">Technical Issue</option>
+                    <option value="account">Account Related</option>
+                    <option value="transaction">Transaction Related</option>
+                    <option value="investment">Investment Related</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="complaint">Describe Your Issue</label>
+                <textarea id="complaint" name="complaint" required placeholder="Please provide details about your issue..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Ticket</button>
+        </form>
+
+        <div class="support-info">
+            <div class="info-item">• Our support team will respond within 24 hours</div>
+            <div class="info-item">• For urgent matters, please contact our customer care</div>
+            <div class="info-item">• Please provide clear and detailed information</div>
+            <div class="info-item">• Include any relevant transaction IDs or screenshots</div>
+        </div>
+
+        <div class="ticket-history">
+            <div class="history-header">Your Support Tickets</div>
+            {% if tickets %}
+                <ul class="ticket-list">
+                    {% for ticket in tickets %}
+                        <li class="ticket-item">
+                            <div class="ticket-header">
+                                <div class="ticket-id">Ticket #{{ ticket.id }}</div>
+                                <div class="ticket-status status-{{ ticket.status }}">
+                                    {{ ticket.status|title }}
+                                </div>
+                            </div>
+                            <div class="ticket-subject">{{ ticket.subject }}</div>
+                            <div class="ticket-message">{{ ticket.message }}</div>
+                            <div class="ticket-meta">
+                                <div>Category: {{ ticket.category|title }}</div>
+                                <div>Created: {{ ticket.created_at }}</div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="no-tickets">
+                    <h2>No support tickets yet</h2>
+                    <p>Create a ticket if you need assistance</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}TATA Stocks - Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .wallet-balance {
+        background-color: var(--accent-color);
+        color: var(--secondary-color);
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .stocks-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px 0;
+    }
+
+    .stock-card {
+        background-color: var(--secondary-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .stock-name {
+        font-size: 1.5em;
+        color: var(--accent-color);
+        margin-bottom: 15px;
+    }
+
+    .stock-details {
+        margin-bottom: 15px;
+    }
+
+    .stock-detail {
+        margin: 5px 0;
+    }
+
+    .buy-btn {
+        background-color: var(--accent-color);
+        color: var(--secondary-color);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        width: 100%;
+    }
+
+    .buy-btn:hover {
+        opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+        .stocks-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="wallet-balance">
+        Wallet Balance: ₹{{ current_user.wallet_balance }}
+    </div>
+
+    <div class="stocks-grid">
+        {% for stock in stocks %}
+        <div class="stock-card">
+            <div class="stock-name">{{ stock.name }}</div>
+            <div class="stock-details">
+                <div class="stock-detail">Package: ₹{{ stock.package }}</div>
+                <div class="stock-detail">Total Return: ₹{{ stock.total_return }}</div>
+                <div class="stock-detail">Daily Return: ₹{{ stock.daily_return }}</div>
+                <div class="stock-detail">Tenure: {{ stock.tenure_days }} days</div>
+            </div>
+            <form action="{{ url_for('buy_stock') }}" method="POST">
+                <input type="hidden" name="stock_id" value="{{ stock.id }}">
+                <button type="submit" class="buy-btn">Buy Now</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 
