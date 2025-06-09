@@ -421,20 +421,29 @@ def support():
         complaint = request.form.get('complaint')
 
         try:
-            supabase.table('support_tickets').insert({
+            # Create support ticket
+            new_ticket = supabase.table('support_tickets').insert({
                 'user_id': current_user.id,
-                'query_type': query_type,
-                'complaint': complaint,
-                'status': 'pending'
+                'category': query_type,
+                'subject': query_type.title(),
+                'message': complaint,
+                'status': 'open'
             }).execute()
-            
-            flash('Support ticket submitted successfully!')
-            return redirect(url_for('dashboard'))
-        except Exception as e:
-            flash(f'Error submitting support ticket: {str(e)}')
+
+            flash('Support ticket submitted successfully!', 'success')
             return redirect(url_for('support'))
 
-    return render_template('support.html')
+        except Exception as e:
+            flash(f'Error submitting ticket: {str(e)}', 'error')
+            return redirect(url_for('support'))
+
+    try:
+        # Get user's support tickets
+        tickets = supabase.table('support_tickets').select('*').eq('user_id', current_user.id).order('created_at', desc=True).execute()
+        return render_template('support.html', tickets=tickets.data)
+    except Exception as e:
+        flash(f'Error loading tickets: {str(e)}', 'error')
+        return redirect(url_for('dashboard'))
 
 @app.route('/buy_stock', methods=['POST'])
 @login_required
