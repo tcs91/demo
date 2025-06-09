@@ -425,9 +425,8 @@ def support():
             new_ticket = supabase.table('support_tickets').insert({
                 'user_id': current_user.id,
                 'query_type': query_type,
-                'subject': query_type.title(),
                 'complaint': complaint,
-                'status': 'open'
+                'status': 'pending'
             }).execute()
 
             flash('Support ticket submitted successfully!', 'success')
