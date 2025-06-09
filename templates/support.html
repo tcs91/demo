@@ -118,6 +118,7 @@
     }
 
     .ticket-history {
+        margin-top: 30px;
         background-color: var(--secondary-color);
         border: 2px solid var(--border-color);
         border-radius: 10px;
@@ -132,19 +133,16 @@
         border-bottom: 1px solid var(--border-color);
     }
 
-    .ticket-list {
-        list-style-type: none;
+    .tickets-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
 
-    .ticket-item {
+    .ticket-card {
         background-color: var(--primary-color);
         border-radius: 5px;
         padding: 15px;
-        margin-bottom: 15px;
-    }
-
-    .ticket-item:last-child {
-        margin-bottom: 0;
     }
 
     .ticket-header {
@@ -157,8 +155,8 @@
     }
 
     .ticket-id {
-        color: var(--accent-color);
         font-weight: bold;
+        color: var(--accent-color);
     }
 
     .ticket-status {
@@ -177,14 +175,15 @@
         color: white;
     }
 
-    .ticket-subject {
-        font-weight: bold;
+    .ticket-category {
+        color: var(--accent-color);
         margin-bottom: 10px;
+        font-size: 0.9em;
     }
 
     .ticket-message {
-        color: var(--text-color);
         margin-bottom: 10px;
+        line-height: 1.4;
     }
 
     .ticket-meta {
@@ -196,8 +195,9 @@
 
     .no-tickets {
         text-align: center;
-        padding: 40px;
+        padding: 30px;
         color: var(--text-color);
+        font-style: italic;
     }
 
     @media (max-width: 768px) {
@@ -208,10 +208,7 @@
         .ticket-header {
             flex-direction: column;
             align-items: flex-start;
-        }
-
-        .ticket-status {
-            margin-top: 10px;
+            gap: 10px;
         }
 
         .ticket-meta {
@@ -260,28 +257,33 @@
         <div class="ticket-history">
             <div class="history-header">Your Support Tickets</div>
             {% if tickets %}
-                <ul class="ticket-list">
+                <div class="tickets-list">
                     {% for ticket in tickets %}
-                        <li class="ticket-item">
+                        <div class="ticket-card">
                             <div class="ticket-header">
                                 <div class="ticket-id">Ticket #{{ ticket.id }}</div>
                                 <div class="ticket-status status-{{ ticket.status }}">
                                     {{ ticket.status|title }}
                                 </div>
                             </div>
-                            <div class="ticket-subject">{{ ticket.subject }}</div>
-                            <div class="ticket-message">{{ ticket.message }}</div>
-                            <div class="ticket-meta">
-                                <div>Category: {{ ticket.category|title }}</div>
-                                <div>Created: {{ ticket.created_at }}</div>
+                            <div class="ticket-category">
+                                Category: {{ ticket.category|title }}
                             </div>
-                        </li>
+                            <div class="ticket-message">
+                                {{ ticket.message }}
+                            </div>
+                            <div class="ticket-meta">
+                                <div class="ticket-date">Created: {{ ticket.created_at.split('T')[0] }}</div>
+                                {% if ticket.updated_at %}
+                                    <div class="ticket-date">Last Updated: {{ ticket.updated_at.split('T')[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
                     {% endfor %}
-                </ul>
+                </div>
             {% else %}
                 <div class="no-tickets">
-                    <h2>No support tickets yet</h2>
-                    <p>Create a ticket if you need assistance</p>
+                    No support tickets found
                 </div>
             {% endif %}
         </div>
