@@ -424,7 +424,7 @@ def support():
             # Create support ticket
             new_ticket = supabase.table('support_tickets').insert({
                 'user_id': current_user.id,
-                'category': query_type,
+                'query_type': query_type,
                 'subject': query_type.title(),
                 'message': complaint,
                 'status': 'open'
