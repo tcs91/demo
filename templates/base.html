@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}TATA Stocks{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --primary-color: #1e88e5;
@@ -85,8 +86,15 @@
             padding: 15px 20px;
             color: var(--text-color);
             text-decoration: none;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             border-bottom: 1px solid var(--border-color);
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
         }
 
         .menu-item:hover {
@@ -179,17 +187,17 @@
     </nav>
 
     <div class="side-menu" id="sideMenu">
-        <a href="{{ url_for('dashboard') }}" class="menu-item">Dashboard</a>
-        <a href="{{ url_for('profile') }}" class="menu-item">Profile</a>
-        <a href="{{ url_for('deposit') }}" class="menu-item">Deposit</a>
-        <a href="{{ url_for('withdraw') }}" class="menu-item">Withdraw</a>
-        <a href="{{ url_for('transactions') }}" class="menu-item">Transactions</a>
-        <a href="{{ url_for('investments') }}" class="menu-item">Your Investments</a>
-        <a href="{{ url_for('claim') }}" class="menu-item">Claim</a>
-        <a href="{{ url_for('rules') }}" class="menu-item">Rules</a>
-        <a href="{{ url_for('referral') }}" class="menu-item">Referral</a>
-        <a href="{{ url_for('support') }}" class="menu-item">Support</a>
-        <a href="{{ url_for('logout') }}" class="menu-item">Logout</a>
+        <a href="{{ url_for('dashboard') }}" class="menu-item"><i class="fas fa-chart-line"></i>Dashboard</a>
+        <a href="{{ url_for('profile') }}" class="menu-item"><i class="fas fa-user"></i>Profile</a>
+        <a href="{{ url_for('deposit') }}" class="menu-item"><i class="fas fa-money-bill-wave"></i>Deposit</a>
+        <a href="{{ url_for('withdraw') }}" class="menu-item"><i class="fas fa-money-bill-transfer"></i>Withdraw</a>
+        <a href="{{ url_for('transactions') }}" class="menu-item"><i class="fas fa-history"></i>Transactions</a>
+        <a href="{{ url_for('investments') }}" class="menu-item"><i class="fas fa-briefcase"></i>Your Investments</a>
+        <a href="{{ url_for('claim') }}" class="menu-item"><i class="fas fa-hand-holding-dollar"></i>Claim</a>
+        <a href="{{ url_for('rules') }}" class="menu-item"><i class="fas fa-gavel"></i>Rules</a>
+        <a href="{{ url_for('referral') }}" class="menu-item"><i class="fas fa-users"></i>Referral</a>
+        <a href="{{ url_for('support') }}" class="menu-item"><i class="fas fa-headset"></i>Support</a>
+        <a href="{{ url_for('logout') }}" class="menu-item"><i class="fas fa-sign-out-alt"></i>Logout</a>
     </div>
 
     <div class="content">
