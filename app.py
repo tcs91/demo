@@ -426,7 +426,7 @@ def support():
                 'user_id': current_user.id,
                 'query_type': query_type,
                 'subject': query_type.title(),
-                'message': complaint,
+                'complaint': complaint,
                 'status': 'open'
             }).execute()
 
