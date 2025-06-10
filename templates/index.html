@@ -338,6 +338,49 @@
         background: rgba(255, 255, 255, 0.12);
     }
 
+    .password-field {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        padding: 0;
+        font-size: 16px;
+        transition: color 0.3s ease;
+    }
+
+    .password-toggle:hover {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .password-toggle i {
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+    }
+
+    .password-toggle .fa-eye {
+        display: none;
+    }
+
+    .password-toggle .fa-eye-slash {
+        display: inline-block;
+    }
+
+    .password-toggle.show-password .fa-eye {
+        display: inline-block;
+    }
+
+    .password-toggle.show-password .fa-eye-slash {
+        display: none;
+    }
+
     .btn {
         width: 100%;
         padding: 12px;
@@ -400,7 +443,13 @@
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <div class="password-field">
+                    <input type="password" id="password" name="password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('password')" title="Toggle password visibility">
+                        <i class="fas fa-eye"></i>
+                        <i class="fas fa-eye-slash"></i>
+                    </button>
+                </div>
             </div>
             <button type="submit" class="btn">Login</button>
         </form>
@@ -422,11 +471,23 @@
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <div class="password-field">
+                    <input type="password" id="password" name="password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('password')" title="Toggle password visibility">
+                        <i class="fas fa-eye"></i>
+                        <i class="fas fa-eye-slash"></i>
+                    </button>
+                </div>
             </div>
             <div class="form-group">
                 <label for="confirm_password">Confirm Password</label>
-                <input type="password" id="confirm_password" name="confirm_password" required>
+                <div class="password-field">
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('confirm_password')" title="Toggle password visibility">
+                        <i class="fas fa-eye"></i>
+                        <i class="fas fa-eye-slash"></i>
+                    </button>
+                </div>
             </div>
             <div class="form-group">
                 <label for="referral_id">Referral ID (Optional)</label>
@@ -448,6 +509,19 @@
         // Update forms
         document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
         document.getElementById(`${tab}-form`).classList.add('active');
+    }
+
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const toggle = input.nextElementSibling;
+        
+        if (input.type === 'password') {
+            input.type = 'text';
+            toggle.classList.add('show-password');
+        } else {
+            input.type = 'password';
+            toggle.classList.remove('show-password');
+        }
     }
 
     function createGlitter() {
