@@ -63,11 +63,112 @@
             grid-template-columns: 1fr;
         }
     }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background-color: var(--secondary-color);
+        margin: 15% auto;
+        padding: 20px;
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        width: 80%;
+        max-width: 500px;
+        position: relative;
+    }
+
+    .modal-header {
+        color: var(--accent-color);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .confirm-btn {
+        background-color: var(--accent-color);
+        color: var(--secondary-color);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .cancel-btn {
+        background-color: #dc3545;
+        color: var(--secondary-color);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .confirm-btn:hover, .cancel-btn:hover {
+        opacity: 0.9;
+    }
+
+    /* Success Message Styles */
+    .success-message {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #28a745;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 1001;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="container">
+    {% if success_message %}
+    <div id="successMessage" class="success-message">
+        {{ success_message }}
+    </div>
+    {% endif %}
+
     <div class="wallet-balance">
         Wallet Balance: ₹{{ current_user.wallet_balance }}
     </div>
@@ -82,12 +183,78 @@
                 <div class="stock-detail">Daily Return: ₹{{ stock.daily_return }}</div>
                 <div class="stock-detail">Tenure: {{ stock.tenure_days }} days</div>
             </div>
-            <form action="{{ url_for('buy_stock') }}" method="POST">
-                <input type="hidden" name="stock_id" value="{{ stock.id }}">
-                <button type="submit" class="buy-btn">Buy Now</button>
-            </form>
+            <button type="button" class="buy-btn" onclick="showConfirmation('{{ stock.name }}', '{{ stock.package }}', '{{ stock.id }}')">Buy Now</button>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Confirm Purchase</h2>
+        </div>
+        <p>Are you sure you want to purchase <span id="stockName"></span> for ₹<span id="stockPrice"></span>?</p>
+        <div class="modal-buttons">
+            <button type="button" class="confirm-btn" onclick="confirmPurchase()">Confirm</button>
+            <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedStockId = null;
+
+    function showConfirmation(stockName, stockPrice, stockId) {
+        document.getElementById('stockName').textContent = stockName;
+        document.getElementById('stockPrice').textContent = stockPrice;
+        selectedStockId = stockId;
+        document.getElementById('confirmationModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('confirmationModal').style.display = 'none';
+        selectedStockId = null;
+    }
+
+    function confirmPurchase() {
+        if (selectedStockId) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = "{{ url_for('buy_stock') }}";
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'stock_id';
+            input.value = selectedStockId;
+            
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+
+    // Show success message if it exists
+    document.addEventListener('DOMContentLoaded', function() {
+        const successMessage = document.getElementById('successMessage');
+        if (successMessage) {
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.animation = 'fadeOut 0.5s ease-out forwards';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 500);
+            }, 3000);
+        }
+    });
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('confirmationModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+</script>
 {% endblock %} 
