@@ -92,11 +92,66 @@
         font-size: 0.9em;
         margin-top: 5px;
     }
+
+    /* Message Styles */
+    .message {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 1001;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    .success-message {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .error-message {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="container">
+    {% if success_message %}
+    <div id="successMessage" class="message success-message">
+        {{ success_message }}
+    </div>
+    {% endif %}
+
+    {% if error_message %}
+    <div id="errorMessage" class="message error-message">
+        {{ error_message }}
+    </div>
+    {% endif %}
+
     <div class="deposit-container">
         <div class="deposit-header">
             <h1>Deposit Funds</h1>
@@ -132,4 +187,27 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Show messages if they exist
+    document.addEventListener('DOMContentLoaded', function() {
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        function showMessage(message) {
+            if (message) {
+                message.style.display = 'block';
+                setTimeout(() => {
+                    message.style.animation = 'fadeOut 0.5s ease-out forwards';
+                    setTimeout(() => {
+                        message.style.display = 'none';
+                    }, 500);
+                }, 3000);
+            }
+        }
+
+        showMessage(successMessage);
+        showMessage(errorMessage);
+    });
+</script>
 {% endblock %} 
