@@ -177,8 +177,7 @@ def deposit():
         sender_name = request.form.get('sender_name')
 
         if amount < 500:
-            flash('Minimum deposit amount is 500!')
-            return redirect(url_for('deposit'))
+            return render_template('deposit.html', error_message='Minimum deposit amount is 500!')
 
         try:
             # Create transaction record
@@ -191,11 +190,9 @@ def deposit():
                 'status': 'pending'
             }).execute()
             
-            flash('Deposit request submitted successfully!')
-            return redirect(url_for('transactions'))
+            return render_template('deposit.html', success_message='Deposit request submitted successfully!')
         except Exception as e:
-            flash(f'Error during deposit: {str(e)}')
-            return redirect(url_for('deposit'))
+            return render_template('deposit.html', error_message=f'Error during deposit: {str(e)}')
 
     return render_template('deposit.html')
 
@@ -207,12 +204,10 @@ def withdraw():
         account_details = request.form.get('account_details')
 
         if amount < 1000:
-            flash('Minimum withdrawal amount is 1000!')
-            return redirect(url_for('withdraw'))
+            return render_template('withdraw.html', error_message='Minimum withdrawal amount is 1000!')
 
         if amount > current_user.wallet_balance:
-            flash('Insufficient balance!')
-            return redirect(url_for('withdraw'))
+            return render_template('withdraw.html', error_message='Insufficient balance!')
 
         try:
             # Create transaction record
@@ -224,11 +219,9 @@ def withdraw():
                 'status': 'pending'
             }).execute()
             
-            flash('Withdrawal request submitted successfully!')
-            return redirect(url_for('transactions'))
+            return render_template('withdraw.html', success_message='Withdrawal request submitted successfully!')
         except Exception as e:
-            flash(f'Error during withdrawal: {str(e)}')
-            return redirect(url_for('withdraw'))
+            return render_template('withdraw.html', error_message=f'Error during withdrawal: {str(e)}')
 
     return render_template('withdraw.html')
 
@@ -504,8 +497,11 @@ def buy_stock():
             flash('Failed to update wallet balance!')
             return redirect(url_for('dashboard'))
 
-        flash('Stock purchased successfully!')
-        return redirect(url_for('investments'))
+        # Get updated stocks list
+        stocks = supabase.table('stocks').select('*').execute()
+        return render_template('dashboard.html', 
+                             stocks=stocks.data, 
+                             success_message='Stock purchased successfully!')
     except Exception as e:
         print(f"Error purchasing stock: {str(e)}")
         flash(f'Error purchasing stock: {str(e)}')
