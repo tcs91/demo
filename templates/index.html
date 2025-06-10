@@ -4,28 +4,125 @@
 
 {% block extra_css %}
 <style>
+    @keyframes glitter {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    .glitter-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        overflow: hidden;
+    }
+
+    .glitter {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #fff;
+        border-radius: 50%;
+        animation: glitter 3s linear infinite;
+    }
+
+    .glitter::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        border-radius: inherit;
+        transform: rotate(45deg);
+    }
+
+    .glitter::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        border-radius: inherit;
+        transform: rotate(-45deg);
+    }
+
     .auth-container {
         max-width: 400px;
         margin: 40px auto;
+        background: linear-gradient(145deg, #1a2b4d 0%, #0a192f 100%);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
+    }
+
+    .auth-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+        animation: rotate 20s linear infinite;
     }
 
     .auth-tabs {
         display: flex;
         margin-bottom: 20px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        padding: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .auth-tabs::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        animation: shine 3s infinite;
     }
 
     .auth-tab {
         flex: 1;
         text-align: center;
         padding: 10px;
-        background-color: var(--secondary-color);
+        background-color: transparent;
         cursor: pointer;
-        border: 1px solid var(--border-color);
+        border: none;
+        color: #ffffff;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        position: relative;
+        z-index: 1;
     }
 
     .auth-tab.active {
-        background-color: var(--accent-color);
-        color: var(--secondary-color);
+        background: linear-gradient(135deg, #00f2fe, #4facfe);
+        color: #ffffff;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(79, 172, 254, 0.3);
     }
 
     .auth-form {
@@ -41,6 +138,11 @@
         height: 150px;
         margin: 0 auto 20px;
         position: relative;
+        background: linear-gradient(145deg, #0a192f 0%, #1a2b4d 100%);
+        border-radius: 50%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
+                    inset 0 0 20px rgba(255, 255, 255, 0.1);
+        overflow: hidden;
     }
 
     .tata-logo::before {
@@ -48,27 +150,222 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        border: 4px solid var(--accent-color);
+        border: 2px solid transparent;
         border-radius: 50%;
         box-sizing: border-box;
+        background: linear-gradient(135deg, #00f2fe, #4facfe, #00f2fe, #4facfe) border-box;
+        background-size: 300% 300%;
+        -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+        animation: shine 4s infinite;
     }
 
     .tata-logo::after {
         content: 'TATA';
         position: absolute;
-        top: 50%;
+        top: 35%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 24px;
-        font-weight: bold;
-        color: var(--accent-color);
+        font-size: 36px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #00f2fe, #4facfe, #00f2fe);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 3px;
+        font-family: 'Arial', sans-serif;
+        animation: shine 4s infinite;
+    }
+
+    .stocks-text {
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 16px;
+        font-weight: 600;
+        background: linear-gradient(135deg, #4facfe, #00f2fe, #4facfe);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 2px;
+        font-family: 'Arial', sans-serif;
+        animation: shine 4s infinite;
+    }
+
+    .tagline {
+        text-align: center;
+        margin-top: -10px;
+        margin-bottom: 30px;
+        font-size: 14px;
+        color: #ffffff;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        opacity: 0.8;
+        position: relative;
+        animation: float 3s ease-in-out infinite;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .tagline::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        bottom: -6px;
+        left: 0;
+        animation: lineShine 2s infinite;
+    }
+
+    @keyframes gradientMove {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes shine {
+        0% {
+            background-position: -200% center;
+            opacity: 0.8;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            background-position: 200% center;
+            opacity: 0.8;
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.8;
+        }
+        50% {
+            transform: translate(-50%, -50%) scale(1.05);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.8;
+        }
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-5px);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes lineShine {
+        0% {
+            opacity: 0.3;
+            transform: scaleX(0.8);
+        }
+        50% {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+        100% {
+            opacity: 0.3;
+            transform: scaleX(0.8);
+        }
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #ffffff;
+        font-weight: 500;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+        border-color: #4facfe;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #00f2fe, #4facfe);
+        border: none;
+        border-radius: 6px;
+        color: #ffffff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+        animation: shine 3s infinite;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+    }
+
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
+<div class="glitter-container" id="glitterContainer"></div>
 <div class="auth-container">
-    <div class="tata-logo"></div>
+    <div class="tata-logo">
+        <div class="stocks-text">STOCKS</div>
+    </div>
+    <div class="tagline">SINCE 2019</div>
     
     <div class="auth-tabs">
         <div class="auth-tab active" onclick="switchTab('login')">Login</div>
@@ -131,6 +428,39 @@
         // Update forms
         document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
         document.getElementById(`${tab}-form`).classList.add('active');
+    }
+
+    function createGlitter() {
+        const container = document.getElementById('glitterContainer');
+        const glitter = document.createElement('div');
+        glitter.className = 'glitter';
+        
+        // Random position
+        glitter.style.left = Math.random() * 100 + 'vw';
+        glitter.style.top = '100vh';
+        
+        // Random size
+        const size = Math.random() * 3 + 2;
+        glitter.style.width = size + 'px';
+        glitter.style.height = size + 'px';
+        
+        // Random animation duration
+        glitter.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        
+        container.appendChild(glitter);
+        
+        // Remove glitter after animation
+        setTimeout(() => {
+            glitter.remove();
+        }, 5000);
+    }
+
+    // Create glitter particles periodically
+    setInterval(createGlitter, 200);
+
+    // Initial glitter particles
+    for(let i = 0; i < 20; i++) {
+        setTimeout(createGlitter, i * 100);
     }
 </script>
 {% endblock %} 
